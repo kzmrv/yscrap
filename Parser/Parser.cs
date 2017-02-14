@@ -82,7 +82,7 @@ namespace Parser
             {
                 nextNodes = ProcessSelector(htmlNode, block.select);
             }
-
+            if (block.children == null) return;
             foreach (var child in block.children)
             {
                 foreach (var nextNode in nextNodes)

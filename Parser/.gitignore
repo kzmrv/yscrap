@@ -98,6 +98,9 @@ bld/
 [Bb]in/
 [Oo]bj/
 
+#Output
+[Oo]utput/
+
 # Visual Studo 2015 cache/options directory
 .vs/
 

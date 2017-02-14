@@ -1,0 +1,14 @@
+﻿{
+    "children": [
+        {
+            "create": "title",
+            "select": ".//title/",
+            "children": [
+                {
+                    "value": ".//value#",
+                    "create": "name"
+                }
+            ]
+        }
+    ]
+}
