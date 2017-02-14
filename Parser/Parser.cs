@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using HtmlAgilityPack;
+using Parser.Commands.Generators;
+using Parser.Commands.Selectors;
 
 namespace Parser
 {
@@ -57,9 +59,9 @@ namespace Parser
                 var dict = parent as IDictionary<string, object>;
                 if (block.create == null)
                 {
-                    throw new ArgumentException("Output cant be null here");
+                    throw new ArgumentException("Output can't be null here");
                 }
-                var value = ProcessGenerator(block.value, htmlNode);
+                var value = ProcessGenerator(htmlNode, block.value);
                 dict.Add(block.create, value);
             }
             else
@@ -75,43 +77,33 @@ namespace Parser
                 }
             }
 
-            var nextNode = htmlNode;
-            if (block.@select != null)
+            var nextNodes = new[] { htmlNode };
+            if (block.select != null)
             {
-                nextNode = ProcessSelector(htmlNode, block.@select);
+                nextNodes = ProcessSelector(htmlNode, block.select);
             }
-            if (block.children == null) return;
+
             foreach (var child in block.children)
             {
-                ProcessBlock(child, nextNode, nextParent);
+                foreach (var nextNode in nextNodes)
+                {
+                    ProcessBlock(child, nextNode, nextParent);
+                }
             }
         }
 
-        const string InnerTextSignature = "#";
-
-        static string ProcessGenerator(string generator, HtmlNode node)
+        static string ProcessGenerator(HtmlNode node, string generatorPattern)
         {
-            if (generator.EndsWith(InnerTextSignature))
-            {
-                var path = generator.Substring(0, generator.Length - InnerTextSignature.Length);
-                var hasPath = !string.IsNullOrWhiteSpace(path);
-                var finalNode = hasPath ? node.SelectSingleNode(path) : node;
-                return finalNode.InnerText;
-            }
-
-            throw new ArgumentException("Invalid generator signature");
+            var generator = Generator.Create(generatorPattern);
+            return generator.Generate(node);
         }
 
-        const string SelectSingleNodeSignature = "/";
-
-        static HtmlNode ProcessSelector(HtmlNode current, string selector)
+        static HtmlNode[] ProcessSelector(HtmlNode node, string selectorPattern)
         {
-            if (selector.EndsWith(SelectSingleNodeSignature))
-            {
-                var path = selector.Substring(0, selector.Length - SelectSingleNodeSignature.Length);
-                return current.SelectSingleNode(path);
-            }
-            throw new ArgumentException("Unknown selector");
+            var selector = Selector.Create(selectorPattern);
+            return selector.Execute(node);
         }
+
+
     }
 }

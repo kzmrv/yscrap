@@ -10,8 +10,8 @@ namespace Parser
             var json = File.ReadAllText("../../schema.json");
             var html = File.ReadAllText("../../source.html");
             var schema = ParserSchema.FromJson(json);
-            var scrapper = new Parser(schema);
-            var result = scrapper.Parse(html);
+            var parser = new Parser(schema);
+            var result = parser.Parse(html);
             var jsonOutput = JsonConvert.SerializeObject(result);
             File.WriteAllText("../../output.json", jsonOutput);
         }
