@@ -1,0 +1,14 @@
+{
+	"children" : [
+		{
+			"create" : "title",
+			"select" : ".//div[@class='review-node']//h1[@class='title']/",
+			"children" : [
+				{
+					"value" : ".//a/span#",
+					"create" : "name",
+				}
+			],
+		},
+	],
+}
