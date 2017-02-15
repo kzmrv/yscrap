@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Generators\AttributeGenerator.cs" />
     <Compile Include="Commands\Generators\Generator.cs" />
     <Compile Include="Commands\Generators\InnerTextGenerator.cs" />
     <Compile Include="Commands\Selectors\Selector.cs" />
@@ -93,6 +94,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Tests\schema_with_attribute.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Tests\simple_schema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

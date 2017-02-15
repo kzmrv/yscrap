@@ -14,5 +14,13 @@ namespace Parser.Tests
             var generator = Generator.Create(pattern);
             generator.Should().BeOfType<InnerTextGenerator>();
         }
+
+        [Test]
+        public void When_parsing_attribute_generator_simple()
+        {
+            var pattern = ".//a/span@class";
+            var generator = Generator.Create(pattern);
+            generator.Should().BeOfType<AttributeGenerator>();
+        }
     }
 }
