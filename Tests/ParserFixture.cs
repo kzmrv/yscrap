@@ -15,8 +15,8 @@ namespace Parser.Tests
 
         static ExpandoObject Parse(string schemaPath, string sourcePath)
         {
-            var schemaJson = ReadFile(schemaPath);
-            var source = ReadFile(sourcePath);
+            var schemaJson = ReadFile(Path.Combine("Tests//Data", schemaPath));
+            var source = ReadFile(Path.Combine("Tests//Data", sourcePath));
             var schema = ParserSchema.FromJson(schemaJson);
             var parser = new Parser(schema);
             return parser.Parse(source);
@@ -25,8 +25,8 @@ namespace Parser.Tests
         [Test]
         public void When_parsing_some_simple_html()
         {
-            var obj = Parse("Tests\\simple_schema.json",
-                "Tests\\book_example.html")
+            var obj = Parse("simple_schema.json",
+                "book_example.html")
                 as IDictionary<string, object>;
             obj.Should().ContainKey("title");
             obj["title"].Should().BeOfType<ExpandoObject>();
@@ -37,8 +37,8 @@ namespace Parser.Tests
         [Test]
         public void When_parsing_schema_with_attribute_generator()
         {
-            dynamic obj = Parse("Tests\\schema_with_attribute.json",
-                "Tests\\book_example.html");
+            dynamic obj = Parse("schema_with_attribute.json",
+                "book_example.html");
             ((string)obj.title.name).Should().BeEquivalentTo("valueId");
         }
     }
