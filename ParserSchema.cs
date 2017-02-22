@@ -17,6 +17,7 @@ namespace Parser
         public string select;
         public string value;
         public string create;
+        public string createArray;
         public ScrapperBlock[] children;
     }
 }

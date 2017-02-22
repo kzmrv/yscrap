@@ -1,19 +1,20 @@
-﻿using HtmlAgilityPack;
+﻿using System.Linq;
+using HtmlAgilityPack;
 
 namespace Parser.Commands.Selectors
 {
-    public class SingleNodeSelector : Selector
+    public class MultipleNodeSelector : Selector
     {
         readonly string path;
 
-        public SingleNodeSelector(string path)
+        public MultipleNodeSelector(string path)
         {
             this.path = path;
         }
 
         public override HtmlNode[] Execute(HtmlNode currentNode)
         {
-            return new[] { currentNode.SelectSingleNode(path) };
+            return currentNode.SelectNodes(path).ToArray();
         }
     }
 }

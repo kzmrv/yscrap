@@ -1,0 +1,23 @@
+{
+	"children":[
+		{
+			"create":"name",
+			"value":".//shop@name",
+		},
+		{
+			"createArray" : "books",
+			"select" : ".//book//",
+			"children" : [
+			{
+				"create":"id",
+				"value":"@id",
+			},
+			{
+				"create":"title",
+				"value":"./title#",
+			}
+		]
+
+		}
+	]
+}

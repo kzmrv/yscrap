@@ -81,6 +81,7 @@
     <Compile Include="Commands\Generators\AttributeGenerator.cs" />
     <Compile Include="Commands\Generators\Generator.cs" />
     <Compile Include="Commands\Generators\InnerTextGenerator.cs" />
+    <Compile Include="Commands\Selectors\MultipleNodeSelector.cs" />
     <Compile Include="Commands\Selectors\Selector.cs" />
     <Compile Include="Commands\Selectors\SingleNodeSelector.cs" />
     <Compile Include="Program.cs" />
@@ -95,6 +96,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Tests\Data\schema_with_attribute.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Tests\Data\schema_with_multi_selector.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Tests\Data\simple_schema.json">
@@ -117,6 +121,9 @@
     <Content Include="Tests\Data\book_example.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Tests\Data\book_store_example.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

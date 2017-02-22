@@ -22,7 +22,7 @@ namespace Parser
             var document = new HtmlDocument();
             document.LoadHtml(html);
             var result = Parse(document.DocumentNode);
-            return Unloop(result);
+            return result;
         }
 
         static ExpandoObject Unloop(ExpandoObject objectNode)
@@ -51,12 +51,12 @@ namespace Parser
             return outputRoot;
         }
 
-        static void ProcessBlock(ScrapperBlock block, HtmlNode htmlNode, ExpandoObject parent)
+        static void ProcessBlock(ScrapperBlock block, HtmlNode htmlNode, object objectNode)
         {
-            var nextParent = parent;
+            var nextObjectNode = objectNode;
             if (block.value != null)
             {
-                var dict = parent as IDictionary<string, object>;
+                var dict = (IDictionary<string, object>)objectNode;
                 if (block.create == null)
                 {
                     throw new ArgumentException("Output can't be null here");
@@ -68,12 +68,28 @@ namespace Parser
             {
                 if (block.create != null)
                 {
-                    nextParent = new ExpandoObject();
-                    var nextParentMembers = (IDictionary<string, object>)nextParent;
-                    nextParentMembers.Add(ParentAlias, parent);
-
-                    var parentMembers = parent as IDictionary<string, object>;
-                    parentMembers.Add(block.create, nextParent);
+                    nextObjectNode = new ExpandoObject();
+                    var currentObjectNodeMembers = (IDictionary<string, object>)objectNode;
+                    currentObjectNodeMembers.Add(block.create, nextObjectNode);
+                }
+                else
+                {
+                    if (block.createArray != null)
+                    {
+                        var selectedNodes = ProcessSelector(htmlNode, block.select);
+                        var arrayToCreate = new ExpandoObject[selectedNodes.Length];
+                        var currentObjectNodeMembers = (IDictionary<string, object>)objectNode;
+                        currentObjectNodeMembers.Add(block.createArray, arrayToCreate);
+                        for (var i = 0; i < selectedNodes.Length; i++)
+                        {
+                            arrayToCreate[i] = new ExpandoObject();
+                            foreach (var child in block.children)
+                            {
+                                ProcessBlock(child, selectedNodes[i], arrayToCreate[i]);
+                            }
+                        }
+                        return;
+                    }
                 }
             }
 
@@ -87,7 +103,7 @@ namespace Parser
             {
                 foreach (var nextNode in nextNodes)
                 {
-                    ProcessBlock(child, nextNode, nextParent);
+                    ProcessBlock(child, nextNode, nextObjectNode);
                 }
             }
         }
@@ -103,7 +119,5 @@ namespace Parser
             var selector = Selector.Create(selectorPattern);
             return selector.Execute(node);
         }
-
-
     }
 }
