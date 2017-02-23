@@ -2,7 +2,7 @@
 	"children":[
 		{
 			"create":"name",
-			"value":".//shop@name",
+			"value":".//shop@name"
 		},
 		{
 			"createArray" : "books",
@@ -10,11 +10,11 @@
 			"children" : [
 			{
 				"create":"id",
-				"value":"@id",
+				"value":"@id"
 			},
 			{
 				"create":"title",
-				"value":"./title#",
+				"value":"./title#"
 			}
 		]
 

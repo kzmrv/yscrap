@@ -25,6 +25,6 @@ namespace Parser.Commands.Generators
             throw new ArgumentException("Unknown generator");
         }
 
-        public abstract string Generate(HtmlNode node);
+        public abstract string GenerateFrom(HtmlNode node);
     }
 }

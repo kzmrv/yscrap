@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Dynamic;
+using Newtonsoft.Json;
 
 namespace Parser
 {
@@ -16,6 +17,7 @@ namespace Parser
     {
         public string select;
         public string value;
+        public ExpandoObject exactValue;
         public string create;
         public string createArray;
         public ScrapperBlock[] children;

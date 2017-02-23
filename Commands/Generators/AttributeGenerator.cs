@@ -12,7 +12,7 @@ namespace Parser.Commands.Generators
             this.attribute = attribute;
         }
 
-        public override string Generate(HtmlNode node)
+        public override string GenerateFrom(HtmlNode node)
         {
             var realNode = node;
             if (!string.IsNullOrWhiteSpace(path))

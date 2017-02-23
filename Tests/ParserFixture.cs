@@ -9,8 +9,8 @@ namespace Parser.Tests
     [TestFixture]
     public class ParserFixture
     {
-        static readonly string directory = TestContext.CurrentContext.TestDirectory;
-        static string ReadFile(string path) => File.ReadAllText(Path.Combine(directory, path));
+        static readonly string Directory = TestContext.CurrentContext.TestDirectory;
+        static string ReadFile(string path) => File.ReadAllText(Path.Combine(Directory, path));
 
         static ExpandoObject Parse(string schemaPath, string sourcePath)
         {
@@ -46,13 +46,25 @@ namespace Parser.Tests
         {
             dynamic obj = Parse("schema_with_multi_selector.json", "book_store_example.html");
             dynamic books = obj.books;
-            ((string) obj.name).Should().BeEquivalentTo("book store");
-            ((string) books[0].id).Should().Be("0");
+            ((string)obj.name).Should().BeEquivalentTo("book store");
+            ((string)books[0].id).Should().Be("0");
             ((string)books[1].id).Should().Be("1");
             ((string)books[2].id).Should().Be("2");
             ((string)obj.books[0].title).Should().BeEquivalentTo("War and peace");
             ((string)obj.books[1].title).Should().BeEquivalentTo("Alice in Wonderland");
             ((string)obj.books[2].title).Should().BeEquivalentTo("Harry Potter");
+        }
+
+        [Test]
+        public void When_parsing_simple_schema_with_exact_object_creating()
+        {
+            dynamic book = Parse("schema_with_exact_creation.json", "book_description_example.html");
+            ((string) book.id).Should().BeEquivalentTo("1");
+            ((string) book.title).Should().BeEquivalentTo("War and peace");
+            ((string) book.author.name).Should().BeEquivalentTo("Leo Tolstoy");
+            ((string) book.published).Should().BeEquivalentTo("1869");
+            ((string) book.genre.type).Should().BeEquivalentTo("novel");
+            ((string) book.genre.fullName).Should().BeEquivalentTo("Historical novel");
         }
     }
 }

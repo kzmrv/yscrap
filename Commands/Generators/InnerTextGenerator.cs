@@ -13,7 +13,7 @@ namespace Parser.Commands.Generators
             this.pattern = pattern;
         }
 
-        public override string Generate(HtmlNode node)
+        public override string GenerateFrom(HtmlNode node)
         {
             var path = pattern.Substring(0, pattern.Length - InnerTextGeneratorSignature.Length);
             var hasPath = !string.IsNullOrWhiteSpace(path);

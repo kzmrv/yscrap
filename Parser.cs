@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using HtmlAgilityPack;
 using Parser.Commands.Generators;
 using Parser.Commands.Selectors;
@@ -51,9 +52,10 @@ namespace Parser
             return outputRoot;
         }
 
-        static void ProcessBlock(ScrapperBlock block, HtmlNode htmlNode, object objectNode)
+        static void ProcessBlock(ScrapperBlock block, HtmlNode htmlNode, ExpandoObject objectNode)
         {
             var nextObjectNode = objectNode;
+            // CREATE STRING FIELD
             if (block.value != null)
             {
                 var dict = (IDictionary<string, object>)objectNode;
@@ -66,6 +68,7 @@ namespace Parser
             }
             else
             {
+                // CREATE FIELD
                 if (block.create != null)
                 {
                     nextObjectNode = new ExpandoObject();
@@ -74,6 +77,7 @@ namespace Parser
                 }
                 else
                 {
+                    // CREATE FIELD-ARRAY
                     if (block.createArray != null)
                     {
                         var selectedNodes = ProcessSelector(htmlNode, block.select);
@@ -91,6 +95,7 @@ namespace Parser
                         return;
                     }
                 }
+
             }
 
             var nextNodes = new[] { htmlNode };
@@ -98,6 +103,16 @@ namespace Parser
             {
                 nextNodes = ProcessSelector(htmlNode, block.select);
             }
+            if (block.exactValue != null)
+            {
+                if (nextNodes.Length != 1)
+                {
+                    throw new ArgumentException("Can't launch exact creation together with multi selector");
+                }
+                CreateExact(block.exactValue, nextNodes.First(), objectNode);
+
+            }
+
             if (block.children == null) return;
             foreach (var child in block.children)
             {
@@ -108,10 +123,31 @@ namespace Parser
             }
         }
 
+        static void CreateExact(ExpandoObject schemaObject, HtmlNode htmlNode, ExpandoObject attachTo)
+        {
+            var schemaFields = schemaObject as IDictionary<string, object>;
+            var parentFields = attachTo as IDictionary<string, object>;
+            foreach (var property in schemaFields)
+            {
+                var innerProperties = property.Value as IDictionary<string, object>;
+                if (innerProperties == null)
+                {
+                    var generatorPattern = property.Value as string;
+                    parentFields.Add(property.Key, ProcessGenerator(htmlNode, generatorPattern));
+                }
+                else
+                {
+                    var newField = new ExpandoObject();
+                    CreateExact(innerProperties as ExpandoObject, htmlNode, newField);
+                    parentFields.Add(property.Key, newField);
+                }
+            }
+        }
+
         static string ProcessGenerator(HtmlNode node, string generatorPattern)
         {
             var generator = Generator.Create(generatorPattern);
-            return generator.Generate(node);
+            return generator.GenerateFrom(node);
         }
 
         static HtmlNode[] ProcessSelector(HtmlNode node, string selectorPattern)

@@ -1,0 +1,20 @@
+﻿{
+    "children": [
+        {
+            "select": ".//description/",
+            "exactValue": {
+                "id": "./id#",
+                "title": "./title#",
+                "author": {
+                    "name": "./author/name#"
+                },
+                "year": "./published#",
+                "genre": {
+                    "type": "./genre@type",
+                    "fullName": "./genre#"
+                },
+                "published": "./published#",
+            }
+        }
+    ]
+}
