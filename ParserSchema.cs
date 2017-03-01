@@ -16,6 +16,7 @@ namespace Parser
     public class ScrapperBlock
     {
         public string select;
+        public string selectMany;
         public string value;
         public ExpandoObject exactValue;
         public string create;

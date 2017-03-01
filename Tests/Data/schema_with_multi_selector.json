@@ -6,7 +6,7 @@
 		},
 		{
 			"createArray" : "books",
-			"select" : ".//book//",
+			"selectMany" : ".//book//",
 			"children" : [
 			{
 				"create":"id",

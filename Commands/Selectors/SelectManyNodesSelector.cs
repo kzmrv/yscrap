@@ -3,11 +3,11 @@ using HtmlAgilityPack;
 
 namespace Parser.Commands.Selectors
 {
-    public class MultipleNodeSelector : Selector
+    public class SelectManyNodesSelector : MultiSelector
     {
         readonly string path;
 
-        public MultipleNodeSelector(string path)
+        public SelectManyNodesSelector(string path)
         {
             this.path = path;
         }

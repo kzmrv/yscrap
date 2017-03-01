@@ -81,9 +81,10 @@
     <Compile Include="Commands\Generators\AttributeGenerator.cs" />
     <Compile Include="Commands\Generators\Generator.cs" />
     <Compile Include="Commands\Generators\InnerTextGenerator.cs" />
-    <Compile Include="Commands\Selectors\MultipleNodeSelector.cs" />
-    <Compile Include="Commands\Selectors\Selector.cs" />
-    <Compile Include="Commands\Selectors\SingleNodeSelector.cs" />
+    <Compile Include="Commands\Selectors\SelectManyNodesSelector.cs" />
+    <Compile Include="Commands\Selectors\MultiSelector.cs" />
+    <Compile Include="Commands\Selectors\SelectSingleNodeSelector.cs" />
+    <Compile Include="Commands\Selectors\SingleSelector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parser.cs" />
